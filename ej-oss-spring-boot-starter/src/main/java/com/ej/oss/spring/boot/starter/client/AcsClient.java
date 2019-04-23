@@ -33,17 +33,42 @@ public class AcsClient {
     private AcsConfig acsConfig;
 
     private DefaultAcsClient acsClient;
-
-    public AcsClient(AcsConfig acsConfig) {
+    
+    public String getAlias() {
+        return acsConfig.getAlias();
+    }
+    /**
+     * 初始化acs客户端
+     * @param acsConfig
+     * @param isMulti 是否属多连接，判断是否需要校验连接的别名，用于工厂管理
+     */
+    public AcsClient(AcsConfig acsConfig,boolean isMulti) {
+        if(isMulti) {
+            acsConfig.multiCheck();
+        }else {
+            acsConfig.singleCheck();
+        }
         this.acsConfig = acsConfig;
     }
 
+    /**
+     * 
+     * @Description: 初始化acs连接
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午5:09:04
+     */
     private void initAcsClient() {
         IClientProfile profile = DefaultProfile.getProfile(REGION_CN_HANGZHOU,
                 acsConfig.getKeyId(), acsConfig.getKeySecret());
         acsClient = new DefaultAcsClient(profile);
     }
-
+    
+    /**
+     * 
+     * @Description: 获取可用的acs连接
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午5:05:36
+     */
     private DefaultAcsClient usableAcsClient() {
         if (acsClient == null) {
             synchronized (this) {
@@ -53,6 +78,13 @@ public class AcsClient {
         return acsClient;
     }
 
+    /**
+     * 
+     * @Description: 获取acs临时令牌
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午5:09:56 
+     * @return
+     */
     public AcsInfoDto getAcsInfo() {
         AssumeRoleRequest request = new AssumeRoleRequest();
         request.setMethod(MethodType.POST);

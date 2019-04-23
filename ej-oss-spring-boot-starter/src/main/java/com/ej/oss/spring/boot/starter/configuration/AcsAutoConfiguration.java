@@ -19,17 +19,15 @@ public class AcsAutoConfiguration {
 
     @Resource
     private AcsProperties acsProperties;
-    
+
     @Bean
     public AcsClientFactory acsClientFactory() {
         List<AcsConfig> multi = acsProperties.getMulti();
         if (!multi.isEmpty()) {
             AcsClientFactory clientFactory = new AcsClientFactory();
-            acsProperties.multiConfigCheck();
-            multi.forEach(sftp -> {
-                AcsClient client = new AcsClient(sftp);
-                String alias = sftp.getAlias();
-                clientFactory.putClient(alias, client, false);
+            multi.forEach(config -> {
+                AcsClient client = new AcsClient(config, Boolean.TRUE);
+                clientFactory.putClient(client, Boolean.FALSE);
             });
             return clientFactory;
         }
@@ -38,9 +36,9 @@ public class AcsAutoConfiguration {
 
     @Bean
     public AcsClient acsClient() {
-        if (!acsProperties.singleIsBlank()) {
-            acsProperties.singleConfigCheck();
-            AcsClient client = new AcsClient(acsProperties.getSingle());
+        AcsConfig config = acsProperties.getSingle();
+        if (!config.isBlank()) {
+            AcsClient client = new AcsClient(config, Boolean.FALSE);
             return client;
         }
         return null;

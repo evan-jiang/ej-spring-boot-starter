@@ -17,10 +17,11 @@ public class AcsClientFactory {
         return clients.get(alias);
     }
 
-    public void putClient(String alias, AcsClient client, boolean cover) {
+    public void putClient(AcsClient client, boolean cover) {
         if (client == null) {
             return;
         }
+        String alias = client.getAlias();
         if (!cover && clients.containsKey(alias)) {
             throw new OssConfigException(
                     clients.get(alias).getClass().getSimpleName()

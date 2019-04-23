@@ -25,11 +25,9 @@ public class OssAutoConfiguration {
         List<OssConfig> multi = ossProperties.getMulti();
         if (!multi.isEmpty()) {
             OssClientFactory clientFactory = new OssClientFactory();
-            ossProperties.multiConfigCheck();
-            multi.forEach(sftp -> {
-                OssClient client = new OssClient(sftp);
-                String alias = sftp.getAlias();
-                clientFactory.putClient(alias, client, false);
+            multi.forEach(config -> {
+                OssClient client = new OssClient(config, Boolean.TRUE);
+                clientFactory.putClient(client, Boolean.FALSE);
             });
             return clientFactory;
         }
@@ -38,9 +36,9 @@ public class OssAutoConfiguration {
 
     @Bean
     public OssClient ossClient() {
-        if (!ossProperties.singleIsBlank()) {
-            ossProperties.singleConfigCheck();
-            OssClient client = new OssClient(ossProperties.getSingle());
+        OssConfig config = ossProperties.getSingle();
+        if (!config.isBlank()) {
+            OssClient client = new OssClient(config, Boolean.FALSE);
             return client;
         }
         return null;

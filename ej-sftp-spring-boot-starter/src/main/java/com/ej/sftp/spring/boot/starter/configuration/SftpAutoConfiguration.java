@@ -25,11 +25,9 @@ public class SftpAutoConfiguration {
         List<SftpConfig> multi = sftpProperties.getMulti();
         if (!multi.isEmpty()) {
             SftpClientFactory sftpClientFactory = new SftpClientFactory();
-            sftpProperties.multiConfigCheck();
-            multi.forEach(sftp -> {
-                SftpClient sftpClient = new SftpClient(sftp);
-                String alias = sftp.getAlias();
-                sftpClientFactory.putClient(alias, sftpClient, false);
+            multi.forEach(config -> {
+                SftpClient sftpClient = new SftpClient(config, Boolean.TRUE);
+                sftpClientFactory.putClient(sftpClient, false);
             });
             return sftpClientFactory;
         }
@@ -38,9 +36,9 @@ public class SftpAutoConfiguration {
 
     @Bean
     public SftpClient sftpClient() {
-        if(!sftpProperties.singleIsBlank()) {
-            sftpProperties.singleConfigCheck();
-            SftpClient sftpClient = new SftpClient(sftpProperties.getSingle());
+        SftpConfig config = sftpProperties.getSingle();
+        if (!config.isBlank()) {
+            SftpClient sftpClient = new SftpClient(config, Boolean.FALSE);
             return sftpClient;
         }
         return null;

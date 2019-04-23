@@ -10,7 +10,7 @@ public class SftpClientTest {
         config.setPort(22);
         config.setUserName("wjs_ceb_creditcard_test");
         config.setPassWord("cVz3oYCn");
-        SftpClient sftpClient = new SftpClient(config);
+        SftpClient sftpClient = new SftpClient(config,Boolean.FALSE);
         sftpClient.downloadFile(
                 "/ceb/creditcard/outfile/20190419/20190418_ZA_WDLoanDetail2.txt",
                 "E:/x/x/20190418_ZA_WDLoanDetail1.txt");

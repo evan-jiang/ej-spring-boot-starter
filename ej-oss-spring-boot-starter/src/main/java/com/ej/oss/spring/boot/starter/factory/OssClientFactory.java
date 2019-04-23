@@ -17,10 +17,11 @@ public class OssClientFactory {
         return clients.get(alias);
     }
 
-    public void putClient(String alias, OssClient client, boolean cover) {
+    public void putClient(OssClient client, boolean cover) {
         if (client == null) {
             return;
         }
+        String alias = client.getAlias();
         if (!cover && clients.containsKey(alias)) {
             throw new OssConfigException(
                     clients.get(alias).getClass().getSimpleName()

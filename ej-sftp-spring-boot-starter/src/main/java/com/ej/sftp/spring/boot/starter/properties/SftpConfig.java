@@ -49,17 +49,33 @@ public class SftpConfig {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-    
+
     @Override
     public String toString() {
         return "SftpConfig [host=" + host + ", port=" + port + ", userName="
                 + userName + "]";
     }
 
-    public void multiConfigCheck() {
+    /**
+     * 
+     * @Description: 多SfptClient配置校验
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午4:44:28
+     */
+    public void multiCheck() {
         if (alias == null || alias.trim().isEmpty()) {
             throw new SftpConfigException("sftp配置别名[alias]不能为空!");
         }
+        singleCheck();
+    }
+
+    /**
+     * 
+     * @Description: 单SftpClient配置校验
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午4:43:56
+     */
+    public void singleCheck() {
         if (host == null || host.trim().isEmpty()) {
             throw new SftpConfigException("sftp配置连接地址[host]不能为空!");
         }
@@ -74,18 +90,26 @@ public class SftpConfig {
         }
     }
 
-    public void singleConfigCheck() {
-        if (host == null || host.trim().isEmpty()) {
-            throw new SftpConfigException("sftp配置连接地址[host]不能为空!");
+    /**
+     * 
+     * @Description: 判断配置是否都为空,单个配置时使用,根据此方法确定是否要初始化SftpClient
+     * @author Evan Jiang
+     * @date 2019年4月23日 下午4:41:54 
+     * @return
+     */
+    public boolean isBlank() {
+        if (host != null && !host.trim().isEmpty()) {
+            return Boolean.FALSE;
         }
-        if (port == null) {
-            throw new SftpConfigException("sftp配置连接端口[port]不能为空!");
+        if (port != null) {
+            return Boolean.FALSE;
         }
-        if (userName == null || userName.trim().isEmpty()) {
-            throw new SftpConfigException("sftp配置连接用户名[host]不能为空!");
+        if (userName != null && !userName.trim().isEmpty()) {
+            return Boolean.FALSE;
         }
-        if (passWord == null || passWord.trim().isEmpty()) {
-            throw new SftpConfigException("sftp配置连接密码[host]不能为空!");
+        if (passWord != null && !passWord.trim().isEmpty()) {
+            return Boolean.FALSE;
         }
+        return Boolean.TRUE;
     }
 }

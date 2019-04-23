@@ -37,15 +37,15 @@ public class SftpClientFactory {
      * @Description: 缓存sftp连接
      * @author Evan Jiang
      * @date 2019年4月22日 上午10:38:33 
-     * @param alias 别名
      * @param client sftp连接
      * @param cover 是否允许覆盖相同的别名
      */
-    public void putClient(String alias, SftpClient client,
+    public void putClient(SftpClient client,
             boolean cover) {
         if (client == null) {
             return;
         }
+        String alias = client.getAlias();
         if (!cover && clients.containsKey(alias)) {
             throw new SftpConfigException("sftp配置别名[alias:" + alias + "]存在重复");
         }

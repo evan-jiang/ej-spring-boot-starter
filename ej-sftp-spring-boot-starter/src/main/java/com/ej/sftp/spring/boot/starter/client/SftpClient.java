@@ -29,7 +29,21 @@ public class SftpClient {
     private ChannelSftp sftp;
     private Session session;
 
-    public SftpClient(SftpConfig sftpConfig) {
+    public String getAlias() {
+        return sftpConfig.getAlias();
+    }
+    
+    /**
+     * 初始化Sftp客户端
+     * @param sftpConfig
+     * @param isMulti 是否属多连接，判断是否需要校验连接的别名，用于工厂管理
+     */
+    public SftpClient(SftpConfig sftpConfig,boolean isMulti) {
+        if(isMulti) {
+            sftpConfig.multiCheck();
+        }else {
+            sftpConfig.singleCheck();
+        }
         this.sftpConfig = sftpConfig;
     }
 

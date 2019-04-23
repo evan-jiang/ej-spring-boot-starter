@@ -29,21 +29,4 @@ public class SftpProperties {
         this.single = single;
     }
 
-    public void multiConfigCheck() {
-        multi.forEach(SftpConfig::multiConfigCheck);
-    }
-
-    public boolean singleIsBlank() {
-        return (single.getHost() == null || single.getHost().trim().isEmpty())
-                && (single.getPort() == null)
-                && (single.getUserName() == null
-                        || single.getUserName().trim().isEmpty())
-                && (single.getPassWord() == null
-                        || single.getPassWord().trim().isEmpty());
-    }
-
-    public void singleConfigCheck() {
-        single.singleConfigCheck();
-    }
-
 }

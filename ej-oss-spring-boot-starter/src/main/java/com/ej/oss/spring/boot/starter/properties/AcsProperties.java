@@ -27,23 +27,4 @@ public class AcsProperties {
         this.single = single;
     }
 
-    public void multiConfigCheck() {
-        multi.forEach(AcsConfig::multiConfigCheck);
-    }
-
-    public boolean singleIsBlank() {
-        return (single.getKeyId() == null || single.getKeyId().trim().isEmpty())
-                && (single.getKeySecret() == null
-                        || single.getKeySecret().trim().isEmpty())
-                && (single.getEndpoint() == null
-                        || single.getEndpoint().trim().isEmpty())
-                && (single.getBucketName() == null
-                        || single.getBucketName().trim().isEmpty())
-                && (single.getArn() == null
-                        || single.getArn().trim().isEmpty());
-    }
-
-    public void singleConfigCheck() {
-        single.singleConfigCheck();
-    }
 }

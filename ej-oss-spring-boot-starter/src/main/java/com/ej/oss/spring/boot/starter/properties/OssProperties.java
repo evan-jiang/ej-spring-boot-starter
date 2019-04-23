@@ -27,21 +27,4 @@ public class OssProperties {
         this.single = single;
     }
 
-    public void multiConfigCheck() {
-        multi.forEach(OssConfig::multiConfigCheck);
-    }
-
-    public boolean singleIsBlank() {
-        return (single.getKeyId() == null || single.getKeyId().trim().isEmpty())
-                && (single.getKeySecret() == null
-                        || single.getKeySecret().trim().isEmpty())
-                && (single.getEndpoint() == null
-                        || single.getEndpoint().trim().isEmpty())
-                && (single.getBucketName() == null
-                        || single.getBucketName().trim().isEmpty());
-    }
-
-    public void singleConfigCheck() {
-        single.singleConfigCheck();
-    }
 }
