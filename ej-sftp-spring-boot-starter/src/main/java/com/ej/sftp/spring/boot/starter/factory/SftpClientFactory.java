@@ -25,7 +25,10 @@ public class SftpClientFactory {
      * @param alias
      * @return
      */
-    public SftpClient getSftpClient(String alias) {
+    public SftpClient getClient(String alias) {
+        if(alias == null) {
+            return null;
+        }
         return clients.get(alias);
     }
 
@@ -35,17 +38,17 @@ public class SftpClientFactory {
      * @author Evan Jiang
      * @date 2019年4月22日 上午10:38:33 
      * @param alias 别名
-     * @param sftpClient sftp连接
+     * @param client sftp连接
      * @param cover 是否允许覆盖相同的别名
      */
-    public void putSftpClient(String alias, SftpClient sftpClient,
+    public void putClient(String alias, SftpClient client,
             boolean cover) {
-        if (sftpClient == null) {
+        if (client == null) {
             return;
         }
         if (!cover && clients.containsKey(alias)) {
             throw new SftpConfigException("sftp配置别名[alias:" + alias + "]存在重复");
         }
-        clients.put(alias, sftpClient);
+        clients.put(alias, client);
     }
 }

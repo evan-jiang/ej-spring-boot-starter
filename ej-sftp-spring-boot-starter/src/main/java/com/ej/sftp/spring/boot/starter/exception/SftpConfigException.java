@@ -1,7 +1,7 @@
 package com.ej.sftp.spring.boot.starter.exception;
 /**
  * 
- * @Description: SFTP连接异常
+ * @Description: SFTP配置异常
  * @author Evan Jiang
  * @date 2019年4月20日 下午2:46:49 
  *

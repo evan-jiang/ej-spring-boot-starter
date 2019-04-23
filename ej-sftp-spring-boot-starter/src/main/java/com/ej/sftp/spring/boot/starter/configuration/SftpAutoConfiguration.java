@@ -29,7 +29,7 @@ public class SftpAutoConfiguration {
             multi.forEach(sftp -> {
                 SftpClient sftpClient = new SftpClient(sftp);
                 String alias = sftp.getAlias();
-                sftpClientFactory.putSftpClient(alias, sftpClient, false);
+                sftpClientFactory.putClient(alias, sftpClient, false);
             });
             return sftpClientFactory;
         }

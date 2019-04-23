@@ -56,13 +56,6 @@ public class SftpConfig {
                 + userName + "]";
     }
 
-    public boolean isBlank() {
-        return (alias == null || alias.trim().isEmpty())
-                && (host == null || host.trim().isEmpty()) && port == null
-                && (userName == null || userName.trim().isEmpty())
-                && (passWord == null || passWord.trim().isEmpty());
-    }
-
     public void multiConfigCheck() {
         if (alias == null || alias.trim().isEmpty()) {
             throw new SftpConfigException("sftp配置别名[alias]不能为空!");
