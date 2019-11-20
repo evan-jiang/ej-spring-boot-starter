@@ -1,0 +1,65 @@
+{
+  "groups": [
+    {
+      "name": "ej.redis",
+      "type": "com.ej.redisson.spring.boot.starter.properties.RedisProperties",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ej.redis.single.redisType",
+      "type": "com.ej.redisson.spring.boot.starter.enums.RedisType",
+      "description": "Redis连接类型配置.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.alias",
+      "type": "java.lang.String",
+      "description": "Redis连接别名.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.dataBase",
+      "type": "java.lang.Integer",
+      "description": "Redis库编号.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.sentinelAddress",
+      "type": "java.lang.String",
+      "description": "哨兵地址列表,多个用\";\"分割,格式如下:[redis://localhost:27377;redis://localhost:27378;redis://localhost:27379].",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.masterName",
+      "type": "java.lang.String",
+      "description": "哨兵master名称.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.passWord",
+      "type": "java.lang.String",
+      "description": "连接密码.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.masterAddress",
+      "type": "java.lang.String",
+      "description": "主从配置主机地址,格式如下:[redis://localhost:6379].",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.single.slaveAddress",
+      "type": "java.lang.String",
+      "description": "主从配置从机地址,多个用\";\"分割,格式如下:[redis://localhost:6380;redis://localhost:6381;redis://localhost:6382].",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
+      "name": "ej.redis.multi",
+      "type": "java.util.List<com.ej.redisson.spring.boot.starter.properties.RedisConfig>",
+      "description": "多Redis连接配置.",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisProperties"
+    }
+  ]
+}

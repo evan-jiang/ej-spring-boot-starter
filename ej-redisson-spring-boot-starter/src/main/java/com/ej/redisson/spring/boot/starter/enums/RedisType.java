@@ -96,7 +96,7 @@ public enum RedisType {
      * @param redisConfig
      * @return org.redisson.api.RedissonClient
      * @auther: Evan·Jiang
-     * @date: 2019/11/20 11:46
+     * @date: 2019/11/20 13:49
      */
     public RedissonClient create(RedisConfig redisConfig) {
         throw new RuntimeException("该类型[" + this.name() + "]的RedissonClient构造器没有实现");
