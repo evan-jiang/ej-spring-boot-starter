@@ -56,6 +56,12 @@
       "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
     },
     {
+      "name": "ej.redis.single.singleAddress",
+      "type": "java.lang.String",
+      "description": "单节点配置地址,格式如下:[redis://localhost:6379].",
+      "sourceType": "com.ej.redisson.spring.boot.starter.properties.RedisConfig"
+    },
+    {
       "name": "ej.redis.multi",
       "type": "java.util.List<com.ej.redisson.spring.boot.starter.properties.RedisConfig>",
       "description": "多Redis连接配置.",

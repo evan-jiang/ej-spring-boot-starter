@@ -14,6 +14,8 @@ public class RedisConfig {
     /**主从**/
     private String masterAddress;
     private String slaveAddress;
+    /**单节点**/
+    private String singleAddress;
 
     public RedisType getRedisType() {
         return redisType;
@@ -77,5 +79,13 @@ public class RedisConfig {
 
     public void setSlaveAddress(String slaveAddress) {
         this.slaveAddress = slaveAddress;
+    }
+
+    public String getSingleAddress() {
+        return singleAddress;
+    }
+
+    public void setSingleAddress(String singleAddress) {
+        this.singleAddress = singleAddress;
     }
 }

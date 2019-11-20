@@ -8,6 +8,7 @@ import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
 import org.redisson.config.MasterSlaveServersConfig;
 import org.redisson.config.SentinelServersConfig;
+import org.redisson.config.SingleServerConfig;
 
 public enum RedisType {
 
@@ -59,6 +60,7 @@ public enum RedisType {
             config.setCodec(new StringCodec());
             MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers();
             masterSlaveServersConfig.setPassword(redisConfig.getPassWord());
+            masterSlaveServersConfig.setDatabase(redisConfig.getDataBase());
             masterSlaveServersConfig.setMasterAddress(redisConfig.getMasterAddress());
             String[] redisSlaveAddresses = redisConfig.getSlaveAddress().split(SPLIT);
             for (String redisSlaveAddress : redisSlaveAddresses) {
@@ -69,7 +71,24 @@ public enum RedisType {
     },
     SINGLE() {
         public void checkConfig(RedisConfig redisConfig, Boolean needAlias) {
-            throw new RedisConfigException("暂不支持连接Redis单点");
+            super.checkConfig(redisConfig, needAlias);
+            if (isBlank(redisConfig.getPassWord())) {
+                throw new RedisConfigException("Redis配置[passWord]不能为空");
+            }
+            if (isBlank(redisConfig.getSingleAddress())) {
+                throw new RedisConfigException("Redis配置[singleAddress]不能为空");
+            }
+        }
+
+        @Override
+        public RedissonClient create(RedisConfig redisConfig) {
+            Config config = new Config();
+            config.setCodec(new StringCodec());
+            SingleServerConfig singleServerConfig = config.useSingleServer();
+            singleServerConfig.setAddress(redisConfig.getSingleAddress());
+            singleServerConfig.setPassword(redisConfig.getPassWord());
+            singleServerConfig.setDatabase(redisConfig.getDataBase());
+            return Redisson.create(config);
         }
     },
     CLUSTER() {
@@ -80,19 +99,21 @@ public enum RedisType {
 
     /**
      * 参数校验
+     *
      * @param redisConfig
-     * @param needAlias 是否需要别名
+     * @param needAlias   是否需要别名
      * @auther: Evan·Jiang
      * @date: 2019/11/20 11:43
      */
     public void checkConfig(RedisConfig redisConfig, Boolean needAlias) {
-        if(needAlias && isBlank(redisConfig.getAlias())){
+        if (needAlias && isBlank(redisConfig.getAlias())) {
             throw new RedisConfigException("Redis配置[alias]不能为空");
         }
     }
 
     /**
      * 生成相应的RedissonClient
+     *
      * @param redisConfig
      * @return org.redisson.api.RedissonClient
      * @auther: Evan·Jiang
