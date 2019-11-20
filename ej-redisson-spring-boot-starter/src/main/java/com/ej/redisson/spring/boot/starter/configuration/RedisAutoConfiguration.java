@@ -1,5 +1,7 @@
 package com.ej.redisson.spring.boot.starter.configuration;
 
+import com.ej.redisson.spring.boot.starter.client.EjRedisClient;
+import com.ej.redisson.spring.boot.starter.factory.EjRedisClientFactory;
 import com.ej.redisson.spring.boot.starter.factory.RedissonClientFactory;
 import com.ej.redisson.spring.boot.starter.properties.RedisConfig;
 import com.ej.redisson.spring.boot.starter.properties.RedisProperties;
@@ -18,27 +20,52 @@ public class RedisAutoConfiguration {
     @Resource
     private RedisProperties redisProperties;
 
+//    @Bean
+//    public RedissonClient redissonClient() {
+//        RedisConfig redisConfig = redisProperties.getSingle();
+//        if (redisConfig == null) {
+//            return null;
+//        }
+//        redisConfig.getRedisType().checkConfig(redisConfig, Boolean.FALSE);
+//        return redisConfig.getRedisType().create(redisConfig);
+//    }
+//
+//    @Bean
+//    public RedissonClientFactory redissonClientFactory() {
+//        List<RedisConfig> multi = redisProperties.getMulti();
+//        if (multi == null || multi.isEmpty()) {
+//            return null;
+//        }
+//        RedissonClientFactory redissonClientFactory = new RedissonClientFactory();
+//        multi.stream().forEach(redisConfig -> {
+//            redisConfig.getRedisType().checkConfig(redisConfig, Boolean.TRUE);
+//            redissonClientFactory.putClient(redisConfig.getAlias(), redisConfig.getRedisType().create(redisConfig));
+//        });
+//        return redissonClientFactory;
+//    }
+
+
     @Bean
-    public RedissonClient redissonClient() {
+    public EjRedisClient ejRedisClient() {
         RedisConfig redisConfig = redisProperties.getSingle();
         if (redisConfig == null) {
             return null;
         }
         redisConfig.getRedisType().checkConfig(redisConfig, Boolean.FALSE);
-        return redisConfig.getRedisType().create(redisConfig);
+        return redisConfig.getRedisType().createEjRedisClient(redisConfig);
     }
 
     @Bean
-    public RedissonClientFactory redissonClientFactory() {
+    public EjRedisClientFactory ejRedisClientFactory() {
         List<RedisConfig> multi = redisProperties.getMulti();
         if (multi == null || multi.isEmpty()) {
             return null;
         }
-        RedissonClientFactory redissonClientFactory = new RedissonClientFactory();
+        EjRedisClientFactory ejRedisClientFactory = new EjRedisClientFactory();
         multi.stream().forEach(redisConfig -> {
             redisConfig.getRedisType().checkConfig(redisConfig, Boolean.TRUE);
-            redissonClientFactory.putClient(redisConfig.getAlias(), redisConfig.getRedisType().create(redisConfig));
+            ejRedisClientFactory.putClient(redisConfig.getAlias(), redisConfig.getRedisType().createEjRedisClient(redisConfig));
         });
-        return redissonClientFactory;
+        return ejRedisClientFactory;
     }
 }

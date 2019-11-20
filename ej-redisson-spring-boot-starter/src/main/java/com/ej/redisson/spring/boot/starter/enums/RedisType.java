@@ -1,5 +1,6 @@
 package com.ej.redisson.spring.boot.starter.enums;
 
+import com.ej.redisson.spring.boot.starter.client.EjRedisClient;
 import com.ej.redisson.spring.boot.starter.exception.RedisConfigException;
 import com.ej.redisson.spring.boot.starter.properties.RedisConfig;
 import org.redisson.Redisson;
@@ -26,7 +27,8 @@ public enum RedisType {
             }
         }
 
-        public RedissonClient create(RedisConfig redisConfig) {
+        @Override
+        protected Config buildConfig(RedisConfig redisConfig) {
             Config config = new Config();
             config.setCodec(new StringCodec());
             SentinelServersConfig sentinelServersConfig = config.useSentinelServers();
@@ -37,7 +39,7 @@ public enum RedisType {
             sentinelServersConfig.setMasterName(redisConfig.getMasterName());
             sentinelServersConfig.setPassword(redisConfig.getPassWord());
             sentinelServersConfig.setDatabase(redisConfig.getDataBase());
-            return Redisson.create(config);
+            return config;
         }
     },
     MASTER_SLAVE() {
@@ -55,7 +57,7 @@ public enum RedisType {
         }
 
         @Override
-        public RedissonClient create(RedisConfig redisConfig) {
+        protected Config buildConfig(RedisConfig redisConfig) {
             Config config = new Config();
             config.setCodec(new StringCodec());
             MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers();
@@ -66,7 +68,7 @@ public enum RedisType {
             for (String redisSlaveAddress : redisSlaveAddresses) {
                 masterSlaveServersConfig.addSlaveAddress(redisSlaveAddress);
             }
-            return Redisson.create(config);
+            return config;
         }
     },
     SINGLE() {
@@ -81,20 +83,18 @@ public enum RedisType {
         }
 
         @Override
-        public RedissonClient create(RedisConfig redisConfig) {
+        protected Config buildConfig(RedisConfig redisConfig) {
             Config config = new Config();
             config.setCodec(new StringCodec());
             SingleServerConfig singleServerConfig = config.useSingleServer();
             singleServerConfig.setAddress(redisConfig.getSingleAddress());
             singleServerConfig.setPassword(redisConfig.getPassWord());
             singleServerConfig.setDatabase(redisConfig.getDataBase());
-            return Redisson.create(config);
+            return config;
         }
     },
     CLUSTER() {
-        public void checkConfig(RedisConfig redisConfig, Boolean needAlias) {
-            throw new RedisConfigException("暂不支持连接Redis集群");
-        }
+
     };
 
     /**
@@ -111,16 +111,18 @@ public enum RedisType {
         }
     }
 
-    /**
-     * 生成相应的RedissonClient
-     *
-     * @param redisConfig
-     * @return org.redisson.api.RedissonClient
-     * @auther: Evan·Jiang
-     * @date: 2019/11/20 13:49
-     */
-    public RedissonClient create(RedisConfig redisConfig) {
+    protected Config buildConfig(RedisConfig redisConfig){
         throw new RuntimeException("该类型[" + this.name() + "]的RedissonClient构造器没有实现");
+    }
+
+    public RedissonClient create(RedisConfig redisConfig) {
+        Config config = buildConfig(redisConfig);
+        return Redisson.create(config);
+    }
+
+    public EjRedisClient createEjRedisClient(RedisConfig redisConfig) {
+        Config config = buildConfig(redisConfig);
+        return EjRedisClient.create(config);
     }
 
     protected boolean isBlank(String value) {
