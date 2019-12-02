@@ -10,8 +10,8 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class SftpProperties {
 
     @NestedConfigurationProperty
-    private List<SftpConfig> multi = new ArrayList<SftpConfig>();
-    private SftpConfig single = new SftpConfig();
+    private List<SftpConfig> multi;
+    private SftpConfig single;
 
     public List<SftpConfig> getMulti() {
         return multi;

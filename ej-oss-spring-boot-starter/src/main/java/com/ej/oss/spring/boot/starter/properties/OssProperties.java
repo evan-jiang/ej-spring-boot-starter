@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "ej.oss")
 public class OssProperties {
 
-    private List<OssConfig> multi = new ArrayList<>();
-    private OssConfig single = new OssConfig();
+    private List<OssConfig> multi;
+    private OssConfig single;
 
     public List<OssConfig> getMulti() {
         return multi;

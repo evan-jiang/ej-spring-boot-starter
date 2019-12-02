@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "ej.acs")
 public class AcsProperties {
 
-    private List<AcsConfig> multi = new ArrayList<>();
-    private AcsConfig single = new AcsConfig();
+    private List<AcsConfig> multi;
+    private AcsConfig single;
 
     public List<AcsConfig> getMulti() {
         return multi;
