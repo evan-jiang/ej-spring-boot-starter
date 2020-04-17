@@ -32,6 +32,7 @@
         <module>ej-sftp-spring-boot-starter</module>
         <module>ej-oss-spring-boot-starter</module>
         <module>ej-redisson-spring-boot-starter</module>
+        <module>ej-chain-spring-boot-starter</module>
     </modules>
 
     <dependencies>
