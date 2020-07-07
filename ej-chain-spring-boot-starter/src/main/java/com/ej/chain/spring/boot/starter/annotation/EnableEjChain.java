@@ -1,6 +1,6 @@
-package com.ej.oss.spring.boot.starter.annotation;
+package com.ej.chain.spring.boot.starter.annotation;
 
-import com.ej.oss.spring.boot.starter.builder.EjChainHandlerBuilder;
+import com.ej.chain.spring.boot.starter.builder.EjChainHandlerBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 

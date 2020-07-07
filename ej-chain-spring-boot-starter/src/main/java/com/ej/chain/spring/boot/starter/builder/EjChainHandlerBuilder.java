@@ -1,10 +1,10 @@
-package com.ej.oss.spring.boot.starter.builder;
+package com.ej.chain.spring.boot.starter.builder;
 
 import com.ej.chain.annotation.FromContext;
+import com.ej.chain.annotation.Handler;
 import com.ej.chain.annotation.ToContext;
-import com.ej.chain.handlers.Handler;
 import com.ej.chain.proxy.ProxyHandlerFactory;
-import com.ej.oss.spring.boot.starter.annotation.EnableEjChain;
+import com.ej.chain.spring.boot.starter.annotation.EnableEjChain;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -38,9 +38,24 @@ public class EjChainHandlerBuilder implements ImportBeanDefinitionRegistrar {
         }
     }
 
+    private String firstLowerCase(String classSimpleName) {
+        return String.valueOf(classSimpleName.charAt(0)).toLowerCase() + classSimpleName.substring(1);
+    }
+
+    class EjClassPathScanningCandidateComponentProvider extends ClassPathScanningCandidateComponentProvider {
+        EjClassPathScanningCandidateComponentProvider(boolean useDefaultFilters) {
+            super(useDefaultFilters);
+        }
+
+        protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+            AnnotationMetadata metadata = beanDefinition.getMetadata();
+            return metadata.isIndependent() && (metadata.isConcrete() || metadata.isAbstract() && (metadata.hasAnnotatedMethods(FromContext.class.getName()) || metadata.hasAnnotatedMethods(ToContext.class.getName())));
+        }
+    }
+
     private Map<String, Class<?>> getNormalOrProxyClass(String[] packages) {
         EjClassPathScanningCandidateComponentProvider scanner = new EjClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter(new AssignableTypeFilter(Handler.class));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(Handler.class));
         final Map<String, Class<?>> classes = new HashMap<>();
         for (String pck : packages) {
             scanner.findCandidateComponents(pck).stream().map(beanDefinition -> {
@@ -64,18 +79,4 @@ public class EjChainHandlerBuilder implements ImportBeanDefinitionRegistrar {
         return classes;
     }
 
-    private String firstLowerCase(String classSimpleName) {
-        return String.valueOf(classSimpleName.charAt(0)).toLowerCase() + classSimpleName.substring(1);
-    }
-
-    class EjClassPathScanningCandidateComponentProvider extends ClassPathScanningCandidateComponentProvider {
-        EjClassPathScanningCandidateComponentProvider(boolean useDefaultFilters) {
-            super(useDefaultFilters);
-        }
-
-        protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
-            AnnotationMetadata metadata = beanDefinition.getMetadata();
-            return metadata.isIndependent() && (metadata.isConcrete() || metadata.isAbstract() && (metadata.hasAnnotatedMethods(FromContext.class.getName()) || metadata.hasAnnotatedMethods(ToContext.class.getName())));
-        }
-    }
 }
